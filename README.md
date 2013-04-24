@@ -1,4 +1,4 @@
-SLD - SpotiTubelink decoder for Irssi
+SLD - SpotiTube Link Decoder for Irssi
 ====================================
 
 # sld.pl
