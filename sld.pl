@@ -27,6 +27,7 @@ $VERSION = '1.05';
   contact => 'Laamanni @ IRCnet',
   name    => 'Spotify link decoder',
   description => 'Looks out for spotify-links and resolves what song or album it is pointing to.',
+  changed => '2013-04-24 08:55',
 );
 
 sub event_msg {
