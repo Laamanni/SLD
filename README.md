@@ -22,6 +22,9 @@ SLD - SpotiTube Link Decoder for Irssi
 #
 # History
 #
+# 1.1b (2013-04-24)
+# - Refined regexp to catch youtube links with additional parameters, example: https://www.youtube.com/watch?v=XUKFLuhwe1w&feature=youtu.be
+#
 # 1.1 (2013-04-24)
 # - Added youtube support
 # - Changed [] from around the link to () in order to maintain clickability.
