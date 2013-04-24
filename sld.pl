@@ -19,6 +19,10 @@
 #
 # History
 #
+# 1.1b (2013-04-24)
+# - Refined regexp to catch youtube links with additional parameters, example: https://www.youtube.com/watch?v=XUKFLuhwe1w&feature=youtu.be
+#
+#
 # 1.1 (2013-04-24)
 # - Added youtube support
 # - Changed [] from around the link to () in order to maintain clickability.
@@ -32,7 +36,7 @@ use strict;
 use LWP::Simple;
 use vars qw($VERSION %IRSSI);
 
-$VERSION = '1.1';
+$VERSION = '1.1b';
 %IRSSI = (
   authors => 'Laamanni',
   contact => 'Laamanni @ IRCnet',
@@ -55,7 +59,7 @@ sub event_msg {
   {
     if ( check_for_match($string) ) {
 	  $found = 1;
-	  $string = "\x{02}" . resolve_link($string) . "\x{02} [" . $string . "]";
+	  $string = "\x{02}" . resolve_link($string) . "\x{02} (" . $string . ")";
     }
     push(@new_msg, $string);
   }
@@ -94,7 +98,8 @@ sub own_msg {
 sub check_for_match {
   my ($string) = @_;
   #my $reg = '(http://)?open\.spotify\.com/(track|album)/\w{22}'; # only spotify links
-  my $reg = '(http(s)?://)?(open\.spotify\.com/(track|album)/\w{22}|(www\.)?youtube\.com/watch\?v=\w{11})'; # spotify and youtube links
+  #my $reg = '(http(s)?://)?(open\.spotify\.com/(track|album)/\w{22}|(www\.)?youtube\.com/watch\?v=\w{11})'; # spotify and youtube links
+  my $reg = '(http(s)?://)?(open\.spotify\.com/(track|album)/\w{22}|(www\.)?youtube\.com/watch\?v=\w{11}&?.*)'; # spotify and youtube (with other parameters) links
   if ($string =~ m/^$reg$/is) {
 	return 1;
   }
