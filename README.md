@@ -19,3 +19,6 @@ There's also a command for resolving URI:s, result is printed to current window
 Usage /sld < line with spotify URI >
 
 Example /sld http://open.spotify.com/track/6x1hipqIkn6pyIP4i6vWGW
+
+
+Required libraries: LWP
