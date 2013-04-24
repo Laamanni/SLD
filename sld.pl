@@ -1,10 +1,9 @@
-#
 # sld.pl
 #
-# Looks out for spotify-links and resolves what song or album it is pointing to.
+# Looks out for spotify and youtube links and resolves what song/album/title it is pointing to.
 #
 # Example message before: [12:23] < NickSteel> Hey check this song out http://open.spotify.com/track/6x1hipqIkn6pyIP4i6vWGW it's awesome!
-# Example message after:  [12:23] < NickSteel>  Hey check this song out Maserati - Monoliths [http://open.spotify.com/track/6x1hipqIkn6pyIP4i6vWGW] it's awesome!
+# Example message after:  [12:23] < NickSteel> Hey check this song out Maserati - Monoliths (http://open.spotify.com/track/6x1hipqIkn6pyIP4i6vWGW) it's awesome!
 #
 # Song/album name is bolded to make it stand out in the message.
 #
@@ -14,8 +13,18 @@
 # Usage /sld <line with spotify URI>
 # Example /sld http://open.spotify.com/track/6x1hipqIkn6pyIP4i6vWGW
 # 
-# 
+#
 # Required libraries: LWP
+#
+#
+# History
+#
+# 1.1 (2013-04-24)
+# - Added youtube support
+# - Changed [] from around the link to () in order to maintain clickability.
+# - Changed name to SpotiTube Link Decoder
+#
+
 
 use Irssi;
 use Irssi::Irc;
@@ -23,13 +32,13 @@ use strict;
 use LWP::Simple;
 use vars qw($VERSION %IRSSI);
 
-$VERSION = '1.05b';
+$VERSION = '1.1';
 %IRSSI = (
   authors => 'Laamanni',
   contact => 'Laamanni @ IRCnet',
-  name    => 'Spotify link decoder',
-  description => 'Looks out for spotify-links and resolves what song or album it is pointing to.',
-  changed => '2013-04-24 10:54',
+  name    => 'SpotiTube Link Decoder',
+  description => 'Looks out for spotify and youtube links and resolves what song/album/title it is pointing to.',
+  changed => '2013-04-24 20:24',
 );
 
 sub event_msg {
@@ -45,7 +54,7 @@ sub event_msg {
   for $string (@string_as_array)
   {
     if ( check_for_match($string) ) {
-    $found = 1;
+	  $found = 1;
 	  $string = "\x{02}" . resolve_link($string) . "\x{02} [" . $string . "]";
     }
     push(@new_msg, $string);
@@ -72,20 +81,20 @@ sub own_msg {
   for $string (@string_as_array)
   {
     if ( check_for_match($string) ) {
-	  $string = "\x{02}" . resolve_link($string) . "\x{02} [" . $string . "]";
+	  $string = "\x{02}" . resolve_link($string) . "\x{02} (" . $string . ")";
 	  Irssi::active_win()->print($string);
 	  $found = 1;
     }
   }
   if ( $found == 0 ) {
-  	print "No valid spotify link found!";
+  	Irssi::active_win()->print("No valid spotify/youtube link found!");;
   }
 }
 
 sub check_for_match {
   my ($string) = @_;
-  my $reg = '(http://)?open\.spotify\.com/(track|album)/\w{22}';
-  
+  #my $reg = '(http://)?open\.spotify\.com/(track|album)/\w{22}'; # only spotify links
+  my $reg = '(http(s)?://)?(open\.spotify\.com/(track|album)/\w{22}|(www\.)?youtube\.com/watch\?v=\w{11})'; # spotify and youtube links
   if ($string =~ m/^$reg$/is) {
 	return 1;
   }
