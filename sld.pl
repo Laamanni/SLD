@@ -14,6 +14,8 @@
 # Usage /sld <line with spotify URI>
 # Example /sld http://open.spotify.com/track/6x1hipqIkn6pyIP4i6vWGW
 # 
+# 
+# Required libraries: LWP
 
 use Irssi;
 use Irssi::Irc;
@@ -21,13 +23,13 @@ use strict;
 use LWP::Simple;
 use vars qw($VERSION %IRSSI);
 
-$VERSION = '1.05';
+$VERSION = '1.05b';
 %IRSSI = (
   authors => 'Laamanni',
   contact => 'Laamanni @ IRCnet',
   name    => 'Spotify link decoder',
   description => 'Looks out for spotify-links and resolves what song or album it is pointing to.',
-  changed => '2013-04-24 08:55',
+  changed => '2013-04-24 10:54',
 );
 
 sub event_msg {
